@@ -3,7 +3,7 @@
 import { usePathname } from 'next/navigation'
 import Image from 'next/image'
 import { Sun, Moon } from 'lucide-react'
-import { mockUser } from '@/data'
+import { useUserStore } from '@/store/useUserStore'
 import { useThemeStore } from '@/store/useThemeStore'
 
 /** Map route pathnames to display titles. */
@@ -20,6 +20,7 @@ const routeTitles: Record<string, string> = {
 export default function Header() {
   const pathname = usePathname()
   const title = routeTitles[pathname] ?? 'Finance'
+  const { user } = useUserStore()
   const { isDark, toggle } = useThemeStore()
 
   return (
@@ -38,15 +39,15 @@ export default function Header() {
         <div className="flex items-center gap-2">
           <div className="w-8 h-8 rounded-full overflow-hidden bg-card-surface">
             <Image
-              src={mockUser.avatar}
-              alt={mockUser.name}
+              src={user.avatar}
+              alt={user.name}
               width={32}
               height={32}
               className="w-full h-full object-cover"
             />
           </div>
           <span className="hidden sm:block text-sm font-medium text-foreground">
-            {mockUser.name}
+            {user.name}
           </span>
         </div>
       </div>
