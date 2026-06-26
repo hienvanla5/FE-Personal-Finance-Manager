@@ -4,12 +4,14 @@ import { useState, useEffect } from 'react'
 import { useWalletStore } from '@/store/useWalletStore'
 import { useTransactionStore } from '@/store/useTransactionStore'
 import { formatCurrency } from '@/lib/formatters'
+import { useTranslation } from '@/hooks/useTranslation'
+import type { TranslationKeys } from '@/lib/locales/en'
 import Card from '@/components/ui/Card'
 import SkeletonSummaryCards from '@/components/skeleton/SkeletonSummaryCards'
 import { Wallet, TrendingUp, TrendingDown, PiggyBank } from 'lucide-react'
 
 interface SummaryCardData {
-  label: string
+  labelKey: TranslationKeys
   value: number
   changePercent: number
   icon: React.ReactNode
@@ -36,6 +38,7 @@ function getMonthlyTotals(transactions: { type: string; amount: number; date: st
 }
 
 export default function SummaryCards() {
+  const { t } = useTranslation()
   const wallets = useWalletStore((s) => s.wallets)
   const transactions = useTransactionStore((s) => s.transactions)
   const [loading, setLoading] = useState(true)
@@ -76,7 +79,7 @@ export default function SummaryCards() {
 
   const cards: SummaryCardData[] = [
     {
-      label: 'Net Worth',
+      labelKey: 'netWorth',
       value: netWorth,
       changePercent: netWorthChange,
       icon: <Wallet className="w-5 h-5" />,
@@ -84,7 +87,7 @@ export default function SummaryCards() {
       textColor: 'text-foreground',
     },
     {
-      label: 'Income This Month',
+      labelKey: 'incomeThisMonth',
       value: incomeThisMonth,
       changePercent: incomeChange,
       icon: <TrendingUp className="w-5 h-5" />,
@@ -92,7 +95,7 @@ export default function SummaryCards() {
       textColor: 'text-income-text',
     },
     {
-      label: 'Expenses This Month',
+      labelKey: 'expensesThisMonth',
       value: expensesThisMonth,
       changePercent: expenseChange,
       icon: <TrendingDown className="w-5 h-5" />,
@@ -100,7 +103,7 @@ export default function SummaryCards() {
       textColor: 'text-expense-text',
     },
     {
-      label: 'Savings',
+      labelKey: 'savings',
       value: savings,
       changePercent: savingsChange,
       icon: <PiggyBank className="w-5 h-5" />,
@@ -111,16 +114,16 @@ export default function SummaryCards() {
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-      {cards.map((card) => (
-        <Card key={card.label} className="p-4">
+        {cards.map((card) => (
+        <Card key={card.labelKey} className="p-4">
           <div className="flex items-start justify-between">
             <div>
-              <p className="text-sm text-text-secondary">{card.label}</p>
+              <p className="text-sm text-text-secondary">{t(card.labelKey)}</p>
               <p className="text-xl font-semibold text-foreground mt-1">
                 {formatCurrency(card.value)}
               </p>
               <p className={`text-xs mt-1 ${card.changePercent >= 0 ? 'text-income-text' : 'text-expense-text'}`}>
-                {card.changePercent >= 0 ? '+' : ''}{card.changePercent.toFixed(1)}% vs last month
+                {card.changePercent >= 0 ? '+' : ''}{card.changePercent.toFixed(1)}% {t('vsLastMonth')}
               </p>
             </div>
             <div className={`p-2 rounded-xl ${card.bgColor} ${card.textColor}`}>

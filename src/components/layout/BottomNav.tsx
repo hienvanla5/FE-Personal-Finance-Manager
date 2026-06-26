@@ -10,22 +10,25 @@ import {
   User,
   type LucideIcon,
 } from 'lucide-react'
+import { useTranslation } from '@/hooks/useTranslation'
+import type { TranslationKeys } from '@/lib/locales/en'
 
 interface NavItem {
-  label: string
+  labelKey: TranslationKeys
   href: string
   icon: LucideIcon
 }
 
 const navItems: NavItem[] = [
-  { label: 'Home', href: '/dashboard', icon: LayoutDashboard },
-  { label: 'Transactions', href: '/transactions', icon: ArrowLeftRight },
-  { label: 'Wallets', href: '/wallets', icon: Wallet },
-  { label: 'Budgets', href: '/budgets', icon: PiggyBank },
-  { label: 'Profile', href: '/profile', icon: User },
+  { labelKey: 'navHome', href: '/dashboard', icon: LayoutDashboard },
+  { labelKey: 'navTransactions', href: '/transactions', icon: ArrowLeftRight },
+  { labelKey: 'navWallets', href: '/wallets', icon: Wallet },
+  { labelKey: 'navBudgets', href: '/budgets', icon: PiggyBank },
+  { labelKey: 'navProfile', href: '/profile', icon: User },
 ]
 
 export default function BottomNav() {
+  const { t } = useTranslation()
   const pathname = usePathname()
 
   return (
@@ -47,7 +50,7 @@ export default function BottomNav() {
               }`}
             >
               <Icon className="w-5 h-5" />
-              <span>{item.label}</span>
+              <span>{t(item.labelKey)}</span>
             </Link>
           )
         })}

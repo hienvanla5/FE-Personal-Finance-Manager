@@ -11,24 +11,26 @@ import {
   User,
   type LucideIcon,
 } from 'lucide-react'
+import { useTranslation } from '@/hooks/useTranslation'
+import type { TranslationKeys } from '@/lib/locales/en'
 
 interface NavItem {
-  label: string
+  labelKey: TranslationKeys
   href: string
   icon: LucideIcon
 }
 
-// Đã xóa mục Overview ở đây
 const navItems: NavItem[] = [
-  { label: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
-  { label: 'Transactions', href: '/transactions', icon: ArrowLeftRight },
-  { label: 'Wallets', href: '/wallets', icon: Wallet },
-  { label: 'Categories', href: '/categories', icon: Tags },
-  { label: 'Budgets', href: '/budgets', icon: PiggyBank },
-  { label: 'Profile', href: '/profile', icon: User },
+  { labelKey: 'navDashboard', href: '/dashboard', icon: LayoutDashboard },
+  { labelKey: 'navTransactions', href: '/transactions', icon: ArrowLeftRight },
+  { labelKey: 'navWallets', href: '/wallets', icon: Wallet },
+  { labelKey: 'navCategories', href: '/categories', icon: Tags },
+  { labelKey: 'navBudgets', href: '/budgets', icon: PiggyBank },
+  { labelKey: 'navProfile', href: '/profile', icon: User },
 ]
 
 export default function Sidebar() {
+  const { t } = useTranslation()
   const pathname = usePathname()
 
   return (
@@ -38,9 +40,9 @@ export default function Sidebar() {
         <div className="w-8 h-8 rounded-lg bg-income flex items-center justify-center">
           <PiggyBank className="w-5 h-5 text-foreground" />
         </div>
-        <span className="text-lg font-semibold text-foreground tracking-tight">
-          Finance
-        </span>
+          <span className="text-lg font-semibold text-foreground tracking-tight">
+            {t('appName')}
+          </span>
       </div>
 
       {/* Navigation */}
@@ -61,7 +63,7 @@ export default function Sidebar() {
               }`}
             >
               <Icon className="w-5 h-5" />
-              <span>{item.label}</span>
+              <span>{t(item.labelKey)}</span>
             </Link>
           )
         })}

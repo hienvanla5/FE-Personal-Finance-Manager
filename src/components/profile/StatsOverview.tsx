@@ -5,12 +5,14 @@ import type { ComponentType, SVGProps } from 'react'
 import Card from '@/components/ui/Card'
 import { useTransactionStore } from '@/store/useTransactionStore'
 import { useUserStore } from '@/store/useUserStore'
+import { useTranslation } from '@/hooks/useTranslation'
 import { formatCurrency } from '@/lib/formatters'
+import type { TranslationKeys } from '@/lib/locales/en'
 
 interface StatItem {
-  label: string
+  labelKey: TranslationKeys
   value: string
-  suffix?: string
+  suffixKey?: TranslationKeys
   icon: ComponentType<SVGProps<SVGSVGElement>>
   bg: string
   iconColor: string
@@ -19,6 +21,7 @@ interface StatItem {
 export default function StatsOverview() {
   const { transactions } = useTransactionStore()
   const { user } = useUserStore()
+  const { t } = useTranslation()
 
   const totalIncome = transactions
     .filter((t) => t.type === 'income')
@@ -38,30 +41,30 @@ export default function StatsOverview() {
 
   const stats: StatItem[] = [
     {
-      label: 'Total Transactions',
+      labelKey: 'totalTransactions',
       value: totalTransactions.toString(),
       icon: Receipt,
       bg: 'bg-card-surface',
       iconColor: 'text-text-secondary',
     },
     {
-      label: 'Total Income',
+      labelKey: 'totalIncome',
       value: formatCurrency(totalIncome, user.currency),
       icon: ArrowUpRight,
       bg: 'bg-income',
       iconColor: 'text-income-text',
     },
     {
-      label: 'Total Expenses',
+      labelKey: 'totalExpenses',
       value: formatCurrency(totalExpenses, user.currency),
       icon: ArrowDownRight,
       bg: 'bg-expense',
       iconColor: 'text-expense-text',
     },
     {
-      label: 'Months Active',
+      labelKey: 'monthsActive',
       value: `${monthsActive}`,
-      suffix: monthsActive === 1 ? 'month' : 'months',
+      suffixKey: monthsActive === 1 ? 'month' : 'months',
       icon: Clock,
       bg: 'bg-info',
       iconColor: 'text-foreground',
@@ -71,7 +74,7 @@ export default function StatsOverview() {
   return (
     <Card className="p-6">
       <h3 className="text-base font-semibold text-foreground mb-4">
-        Stats Overview
+        {t('statsOverview')}
       </h3>
 
       <div className="grid grid-cols-2 gap-4">
@@ -79,7 +82,7 @@ export default function StatsOverview() {
           const Icon = stat.icon
           return (
             <div
-              key={stat.label}
+              key={stat.labelKey}
               className="rounded-2xl border border-border p-4"
             >
               <div className="flex items-center gap-3">
@@ -90,13 +93,13 @@ export default function StatsOverview() {
                 </div>
                 <div className="min-w-0">
                   <p className="text-xs text-text-secondary truncate">
-                    {stat.label}
+                    {t(stat.labelKey)}
                   </p>
                   <p className="text-sm font-bold text-foreground">
                     {stat.value}
-                    {stat.suffix && (
+                    {stat.suffixKey && (
                       <span className="text-xs font-normal text-text-secondary ml-1">
-                        {stat.suffix}
+                        {t(stat.suffixKey)}
                       </span>
                     )}
                   </p>

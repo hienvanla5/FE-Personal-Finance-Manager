@@ -11,6 +11,8 @@ import Input from '@/components/ui/Input'
 import Select from '@/components/ui/Select'
 import Button from '@/components/ui/Button'
 import { useUserStore } from '@/store/useUserStore'
+import { useLocaleStore } from '@/store/useLocaleStore'
+import { useTranslation } from '@/hooks/useTranslation'
 
 const profileSchema = z.object({
   name: z
@@ -26,6 +28,8 @@ type ProfileFormValues = z.infer<typeof profileSchema>
 
 export default function ProfileForm() {
   const { user, updateUser } = useUserStore()
+  const { setLocale } = useLocaleStore()
+  const { t } = useTranslation()
   const [avatarPreview, setAvatarPreview] = useState<string>(user.avatar)
   const [avatarFile, setAvatarFile] = useState<string | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
@@ -46,6 +50,16 @@ export default function ProfileForm() {
   })
 
   const currentName = watch('name')
+  const currentLocale = watch('locale')
+  const currentCurrency = watch('currency')
+  const currentEmail = watch('email')
+
+  // Manual dirty check: compare watched values against the persisted user store
+  const isFormDirty =
+    currentName !== user.name ||
+    currentEmail !== user.email ||
+    currentCurrency !== user.currency ||
+    currentLocale !== user.locale
 
   function handleAvatarChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0]
@@ -65,12 +79,14 @@ export default function ProfileForm() {
       ...data,
       ...(avatarFile ? { avatar: avatarFile } : {}),
     })
+    // Trigger full UI language switch to match the saved locale
+    setLocale(data.locale)
   }
 
   return (
     <Card className="p-6">
       <h3 className="text-base font-semibold text-foreground mb-4">
-        Edit Profile
+        {t('editProfile')}
       </h3>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
@@ -92,10 +108,10 @@ export default function ProfileForm() {
               className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-lg bg-card-surface text-text-secondary hover:text-foreground hover:bg-border transition-colors"
             >
               <Camera className="h-4 w-4" />
-              Change Photo
+              {t('changePhoto')}
             </button>
             <p className="text-xs text-text-secondary mt-1">
-              PNG or JPG. Max 5MB.
+              {t('photoHint')}
             </p>
           </div>
           <input
@@ -108,37 +124,37 @@ export default function ProfileForm() {
         </div>
 
         <Input
-          label="Name"
-          placeholder="Your full name"
+          label={t('labelName')}
+          placeholder={t('placeholderName')}
           error={errors.name?.message}
           {...register('name')}
         />
 
         <Input
-          label="Email"
+          label={t('labelEmail')}
           type="email"
-          placeholder="your@email.com"
+          placeholder={t('placeholderEmail')}
           error={errors.email?.message}
           {...register('email')}
         />
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <Select
-            label="Preferred Currency"
+            label={t('labelPreferredCurrency')}
             options={[
-              { value: 'USD', label: 'USD ($)' },
-              { value: 'EUR', label: 'EUR (€)' },
-              { value: 'VND', label: 'VND (₫)' },
+              { value: 'USD', label: t('currencyUSD') },
+              { value: 'EUR', label: t('currencyEUR') },
+              { value: 'VND', label: t('currencyVND') },
             ]}
             error={errors.currency?.message}
             {...register('currency')}
           />
 
           <Select
-            label="Locale"
+            label={t('labelLocale')}
             options={[
-              { value: 'en-US', label: 'English (US)' },
-              { value: 'vi-VN', label: 'Tiếng Việt (VN)' },
+              { value: 'en-US', label: t('optionEnglish') },
+              { value: 'vi-VN', label: t('optionVietnamese') },
             ]}
             error={errors.locale?.message}
             {...register('locale')}
@@ -149,10 +165,10 @@ export default function ProfileForm() {
           <Button
             type="submit"
             variant="primary"
-            disabled={!isDirty && !avatarFile || isSubmitting}
+            disabled={!isFormDirty && !avatarFile || isSubmitting}
           >
             <Save className="h-4 w-4" />
-            Save Changes
+            {t('saveChanges')}
           </Button>
         </div>
       </form>

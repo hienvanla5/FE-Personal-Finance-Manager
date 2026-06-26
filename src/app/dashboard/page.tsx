@@ -1,6 +1,7 @@
 'use client'
 
 import { useMemo } from 'react'
+import { useTranslation } from '@/hooks/useTranslation'
 import { useTransactionStore } from '@/store/useTransactionStore'
 import SummaryCards from '@/components/dashboard/SummaryCards'
 import IncomeExpenseChart from '@/components/dashboard/IncomeExpenseChart'
@@ -23,11 +24,13 @@ export default function DashboardPage() {
     })
   }, [transactions])
 
+  const { t } = useTranslation()
+
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-[#2C2C2A]">Dashboard</h1>
-        <p className="text-sm text-[#6B6B68] mt-1">Your financial overview at a glance</p>
+        <h1 className="text-2xl font-bold text-[#2C2C2A]">{t('dashboardTitle')}</h1>
+        <p className="text-sm text-[#6B6B68] mt-1">{t('dashboardSubtitle')}</p>
       </div>
 
       <SummaryCards />

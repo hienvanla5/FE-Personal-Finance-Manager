@@ -3,10 +3,12 @@
 import { User, Calendar, CreditCard } from 'lucide-react'
 import Card from '@/components/ui/Card'
 import { useUserStore } from '@/store/useUserStore'
+import { useTranslation } from '@/hooks/useTranslation'
 import { formatDate } from '@/lib/formatters'
 
 export default function ProfileCard() {
   const { user } = useUserStore()
+  const { t } = useTranslation()
 
   const initials = user.name
     .split(' ')
@@ -51,10 +53,10 @@ export default function ProfileCard() {
             </span>
 
             {/* Member since */}
-            <span className="inline-flex items-center gap-1 text-xs text-text-secondary">
-              <Calendar className="h-3 w-3" />
-              Member since {formatDate(user.createdAt)}
-            </span>
+              <span className="inline-flex items-center gap-1 text-xs text-text-secondary">
+                <Calendar className="h-3 w-3" />
+                {t('memberSince')} {formatDate(user.createdAt)}
+              </span>
           </div>
         </div>
 

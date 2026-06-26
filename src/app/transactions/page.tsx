@@ -1,6 +1,7 @@
 'use client'
 
 import { useMemo, useState } from 'react'
+import { useTranslation } from '@/hooks/useTranslation'
 import { useTransactionStore } from '@/store/useTransactionStore'
 import { useCategoryStore } from '@/store/useCategoryStore'
 import { useWalletStore } from '@/store/useWalletStore'
@@ -9,6 +10,7 @@ import TransactionSearchBar from '@/components/transaction/TransactionSearchBar'
 import TransactionList from '@/components/transaction/TransactionList'
 
 export default function TransactionsPage() {
+  const { t } = useTranslation()
   const {
     transactions,
     filters,
@@ -79,9 +81,9 @@ export default function TransactionsPage() {
     <div className="space-y-6">
       {/* Page header */}
       <div>
-        <h1 className="text-2xl font-bold text-[#2C2C2A]">Transactions</h1>
+        <h1 className="text-2xl font-bold text-[#2C2C2A]">{t('navTransactions')}</h1>
         <p className="mt-1 text-sm text-[#6B6B68]">
-          View and manage all your financial activity
+          {t('routeTransactions')}
         </p>
       </div>
 
