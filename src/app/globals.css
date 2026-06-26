@@ -1,22 +1,52 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #FAF8F5;
+  --foreground: #2C2C2A;
+  --card-surface: #F2EDE8;
+  --card-bg: #ffffff;
+  --income: #B5E2CF;
+  --income-text: #2A6B4E;
+  --expense: #F2B8C6;
+  --expense-text: #7B3352;
+  --info: #B3D9F5;
+  --budget-warning: #F7CEAD;
+  --text-secondary: #6B6B68;
+  --border: #E2DDD8;
+}
+
+.dark {
+  --background: #1C1A18;
+  --foreground: #F0EDE8;
+  --card-surface: #242220;
+  --card-bg: #242220;
+  --income: #6BBF9E;
+  --income-text: #B5E2CF;
+  --expense: #C87A90;
+  --expense-text: #F2B8C6;
+  --info: #4A8DB7;
+  --budget-warning: #C4946A;
+  --text-secondary: #9E9A95;
+  --border: #383530;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-card-surface: var(--card-surface);
+  --color-card-bg: var(--card-bg);
+  --color-income: var(--income);
+  --color-income-text: var(--income-text);
+  --color-expense: var(--expense);
+  --color-expense-text: var(--expense-text);
+  --color-info: var(--info);
+  --color-budget-warning: var(--budget-warning);
+  --color-text-secondary: var(--text-secondary);
+  --color-border: var(--border);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
 }
 
 body {

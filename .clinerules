@@ -1,0 +1,66 @@
+# Personal Finance Manager — Cline Rules
+
+## Stack
+- Framework: Next.js 14 App Router (frontend only, no backend)
+- Language: TypeScript
+- Styling: Tailwind CSS
+- State: Zustand
+- Data fetching: TanStack Query (React Query)
+- Forms: React Hook Form + Zod
+- Charts: Recharts
+- Icons: Lucide React
+- Mock data: all data is mocked, no real API calls
+
+## Pastel Neutral Palette
+- Background: #FAF8F5 (warm cream)
+- Card surface: #F2EDE8 (soft stone)
+- Income accent: #B5E2CF (sage mint)
+- Expense accent: #F2B8C6 (blush pink)
+- Info/chart: #B3D9F5 (sky blue)
+- Budget warning: #F7CEAD (warm peach)
+- Text primary: #2C2C2A
+- Text secondary: #6B6B68
+- Border: #E2DDD8
+
+## Mock Data
+- All data lives in src/data/ as TypeScript constants
+- Use hardcoded faker-style records, rich enough to make the UI look real (at least 10–20 records per entity)
+- No database, no API calls, no localStorage (unless explicitly requested)
+
+## Folder Structure
+src/
+  app/            → Next.js App Router pages
+  components/     → UI components (organized by module)
+    ui/           → atoms: Button, Card, Badge, Input...
+    layout/       → Sidebar, Navbar, BottomNav
+    dashboard/    → DashboardSummary, RecentTransactions...
+    wallet/       → WalletCard, WalletList...
+    transaction/  → TransactionItem, TransactionForm...
+    category/     → CategoryBadge, CategoryPicker...
+    budget/       → BudgetCard, BudgetProgress...
+    profile/      → ProfileCard, ProfileForm...
+  data/           → mock data (users, wallets, transactions...)
+  hooks/          → custom hooks
+  lib/            → utils, formatters, constants
+  store/          → Zustand stores
+  types/          → TypeScript interfaces
+
+## Naming Conventions
+- Components: PascalCase (TransactionItem.tsx)
+- Hooks: camelCase prefixed with use (useTransactions.ts)
+- Pages: kebab-case folders, page.tsx inside
+- Types: PascalCase interfaces (Transaction, Wallet...)
+
+## Code Style
+- One component per file
+- Always default export the main component
+- Use "use client" only when interactivity is needed
+- Long Tailwind class strings → extract into cn() helper
+- No `any` types — always type fully
+
+## UI Rules
+- All cards: rounded-2xl shadow-sm border border-[#E2DDD8]
+- Consistent spacing: p-4 for small cards, p-6 for large cards
+- Income → mint background #B5E2CF, text #2A6B4E
+- Expense → blush background #F2B8C6, text #7B3352
+- Loading skeletons: bg-[#F2EDE8] animate-pulse
